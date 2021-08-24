@@ -1,12 +1,15 @@
 package com.payconiq.tradingapp.model.stock;
 
-import com.sun.istack.internal.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.data.annotation.Id;
+import org.springframework.format.annotation.NumberFormat;
+import org.springframework.format.annotation.NumberFormat.Style;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -14,17 +17,18 @@ import java.util.Date;
 @Setter
 @ToString
 @NoArgsConstructor
+@Entity
 public class Stock {
     
     @Id
     private Integer id;
     
-    @NotNull
+    @NotBlank(message = "Name is mandatory")
     private String name;
     
-    @NotNull
+    @NotBlank(message = "Price is mandatory")
+    @NumberFormat(style=Style.CURRENCY)
     private BigDecimal price;
     
-    @NotNull
     private Date lastUpdate;
 }

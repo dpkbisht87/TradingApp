@@ -6,7 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
 import java.math.BigDecimal;
 
 @Getter
@@ -15,6 +16,9 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UpdateStockRequest {
-    @NotNull(message = "{constraints.NotEmpty.message}")
+    
+    @DecimalMin(value = "0.00", inclusive = false)
+    @Digits(integer=5, fraction=2)
     private BigDecimal price;
+    
 }

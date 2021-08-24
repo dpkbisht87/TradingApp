@@ -6,12 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
-import java.util.Date;
 
 @Getter
 @Setter
@@ -19,13 +15,15 @@ import java.util.Date;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CreateStockRequest {
-    @NotEmpty(message = "{constraints.NotEmpty.message}")
-    private int id;
+    @NotNull
+    private Integer id;
     
-    @NotNull(message = "{constraints.NotEmpty.message}")
+    @Pattern(regexp = "^[a-zA-Z0-9]*$")
+    @NotEmpty(message = "Name cannot be empty")
     private String name;
     
-    @NotNull(message = "{constraints.NotEmpty.message}")
+    @DecimalMin(value = "0.00", inclusive = false)
+    @Digits(integer=5, fraction=2)
     private BigDecimal price;
 }
 

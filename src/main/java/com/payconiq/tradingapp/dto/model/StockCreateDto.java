@@ -2,12 +2,10 @@ package com.payconiq.tradingapp.dto.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -18,8 +16,12 @@ import java.util.Date;
 @ToString
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Data
 public class StockCreateDto {
+    @NotBlank(message = "The Id is required.")
     private int id;
+    
+    @NotBlank(message = "The name is required.")
     private String name;
     private BigDecimal currentValue;
     private Date lastUpdate;
