@@ -8,6 +8,8 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotBlank;
+
 @Getter
 @Setter
 @Accessors(chain = true)
@@ -16,5 +18,6 @@ import lombok.experimental.Accessors;
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class StockDeleteDto {
-    private int id;
+    @NotBlank(message = "The Id is required.")
+    private Long id;
 }

@@ -21,14 +21,14 @@ public class StockMockedDataRepositoryImpl implements  StockMockedDataRepository
     }
     
     public StockMockedDataRepositoryImpl() {
-        stocks = new ArrayList<Stock>();
+        stocks = new ArrayList<>();
         Stock s1 = new Stock();
-        s1.setId(1);
+        s1.setId(1L);
         s1.setName("A");
         s1.setPrice(new BigDecimal("1000"));
         stocks.add(s1);
     
-        Stock s2 = new Stock();
+        /*Stock s2 = new Stock();
         s2.setId(2);
         s2.setName("B");
         s2.setPrice(new BigDecimal("2000"));
@@ -44,7 +44,7 @@ public class StockMockedDataRepositoryImpl implements  StockMockedDataRepository
         s4.setId(4);
         s4.setName("D");
         s4.setPrice(new BigDecimal("4000"));
-        stocks.add(s4);
+        stocks.add(s4);*/
     }
     
     public List<Stock> getAllStocks(){
@@ -70,19 +70,28 @@ public class StockMockedDataRepositoryImpl implements  StockMockedDataRepository
         }
         return null;
     }
-    public Stock findById(int id){
+    public Stock findById(Long id){
         for(Stock stock: stocks) {
-            if(stock.getId() == id) {
+            if(stock.getId().equals(id)) {
                 return stock;
             }
         }
         return null;
     }
     
-    public Stock delete(int id) {
+    public Stock findByName(String name){
+        for(Stock stock: stocks) {
+            if(stock.getName().equals(name)) {
+                return stock;
+            }
+        }
+        return null;
+    }
+    
+    public Stock delete(Long id) {
         int stockIndex = -1;
         for(Stock stock: stocks) {
-            if(stock.getId() == id) {
+            if(stock.getId().equals(id)) {
                 stockIndex = stocks.indexOf(stock);
                 break;
             }

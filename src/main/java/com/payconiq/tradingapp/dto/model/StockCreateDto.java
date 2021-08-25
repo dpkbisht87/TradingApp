@@ -19,7 +19,7 @@ import java.util.Date;
 @Data
 public class StockCreateDto {
     @NotBlank(message = "The Id is required.")
-    private int id;
+    private Long id;
     
     @NotBlank(message = "The name is required.")
     private String name;

@@ -14,13 +14,13 @@ public interface StockService {
     List<StockQueryDto> getAllStocks();
     
     // Get Stock by Id
-    StockQueryDto getStockById(int id);
+    StockQueryDto getStockById(long id);
     
     // Create a new Stock
     StockQueryDto createStock(StockCreateDto stockCreateDto);
     
     // Update the price of existing Stock
-    StockQueryDto updatePrice(int id, StockUpdateDto stockUpdateDto);
+    StockQueryDto updatePrice(long id, StockUpdateDto stockUpdateDto);
 
     // Delete the Stock by Id
     StockQueryDto delete(StockDeleteDto stockDeleteDto);

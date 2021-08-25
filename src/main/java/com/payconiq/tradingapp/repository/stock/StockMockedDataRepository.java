@@ -11,9 +11,11 @@ public interface StockMockedDataRepository {
     
     Stock update(Stock stock);
     
-    Stock findById(int id);
+    Stock findById(Long id);
+    
+    Stock findByName(String name);
     
     List<Stock> getAllStocks();
     
-    Stock delete(int id);
+    Stock delete(Long id);
 }

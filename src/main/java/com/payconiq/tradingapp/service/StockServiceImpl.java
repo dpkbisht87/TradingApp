@@ -16,17 +16,17 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import static com.payconiq.tradingapp.exception.EntityType.STOCK;
 import static com.payconiq.tradingapp.exception.ExceptionType.DUPLICATE_ENTITY;
 import static com.payconiq.tradingapp.exception.ExceptionType.ENTITY_NOT_FOUND;
-import static com.payconiq.tradingapp.exception.ExceptionType.UPDATE_FAILED_EXCEPTION;
 
 @Component
 public class StockServiceImpl implements StockService {
     
-    @Autowired
+    @Autowired 
     private StockMockedDataRepository stockMockedDataRepository;
     
     @Override
@@ -43,7 +43,7 @@ public class StockServiceImpl implements StockService {
     }
     
     @Override
-    public StockQueryDto getStockById(int id) {
+    public StockQueryDto getStockById(long id) {
         Stock stock = stockMockedDataRepository.findById(id);
         if (stock != null) {
             return StockMapper.toStockDto(stock);
@@ -54,25 +54,27 @@ public class StockServiceImpl implements StockService {
     @Override
     public StockQueryDto createStock(StockCreateDto stockCreateDto) {
         System.out.println("Create Stock");
-        Stock stock = stockMockedDataRepository.findById(stockCreateDto.getId());
-        if (stock == null) {
+        Stock stock;
+        stock = stockMockedDataRepository.findByName(stockCreateDto.getName());
+        if(stock == null){
             stock = new Stock();
-            stock.setId(stockCreateDto.getId());
+            Random rand = new Random();
+            stock.setId((long) rand.nextInt(10000000));
             stock.setName(stockCreateDto.getName());
             stock.setPrice(stockCreateDto.getCurrentValue());
             stock.setLastUpdate(new Date());
             return StockMapper.toStockDto(stockMockedDataRepository.save(stock));
         }
-        throw exception(STOCK, DUPLICATE_ENTITY, String.valueOf(stockCreateDto.getId()));
+        throw exception(STOCK, DUPLICATE_ENTITY, stockCreateDto.getName());
     }
     
     @Override
-    public StockQueryDto updatePrice(int id, StockUpdateDto stockUpdateDto) {
-        try {
+    public StockQueryDto updatePrice(long id, StockUpdateDto stockUpdateDto) {
+        /*try {
             TimeUnit.SECONDS.sleep(5);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
         Stock stock = stockMockedDataRepository.findById(id);
         if (stock != null) {
             stock.setPrice(stockUpdateDto.getCurrentValue());

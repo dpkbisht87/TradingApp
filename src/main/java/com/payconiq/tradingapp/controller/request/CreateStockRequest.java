@@ -9,14 +9,13 @@ import lombok.experimental.Accessors;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
+
 @Getter
 @Setter
 @Accessors(chain = true)
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CreateStockRequest {
-    @NotNull
-    private Integer id;
     
     @Pattern(regexp = "^[a-zA-Z0-9]*$")
     @NotEmpty(message = "Name cannot be empty")

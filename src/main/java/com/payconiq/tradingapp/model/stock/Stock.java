@@ -1,17 +1,14 @@
 package com.payconiq.tradingapp.model.stock;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Random;
 
 @Getter
 @Setter
@@ -21,7 +18,7 @@ import java.util.Date;
 public class Stock {
     
     @Id
-    private Integer id;
+    private Long id;
     
     @NotBlank(message = "Name is mandatory")
     private String name;
@@ -30,5 +27,6 @@ public class Stock {
     @NumberFormat(style=Style.CURRENCY)
     private BigDecimal price;
     
+    @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdate;
 }

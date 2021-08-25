@@ -19,7 +19,7 @@ import java.util.Date;
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class StockQueryDto {
-    private int id;
+    private Long id;
     private String name;
     private BigDecimal currentValue;
     private Date lastUpdate;

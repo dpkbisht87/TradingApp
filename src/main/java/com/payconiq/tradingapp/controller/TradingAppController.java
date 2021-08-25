@@ -17,6 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Size;
 
 
 @RestController
@@ -46,7 +49,7 @@ public class TradingAppController {
     public Response createStock(@Valid  @RequestBody CreateStockRequest createStockRequest){
         StockQueryDto stockQueryDto = createNewStock(createStockRequest);
         if(stockQueryDto == null){
-            return Response.notFound().setErrors("Stock with id " + createStockRequest.getId() + "already exists");
+            return Response.notFound().setErrors("Stock " + createStockRequest.getName() + "already exists");
         } else {
             return Response.ok().setPayload(stockQueryDto);
         }
@@ -54,21 +57,20 @@ public class TradingAppController {
     
     private StockQueryDto createNewStock(CreateStockRequest createStockRequest) {
         StockCreateDto stockCreateDto = new StockCreateDto()
-                                    .setId(createStockRequest.getId())
-                                    .setName(createStockRequest.getName())
-                                    .setCurrentValue(createStockRequest.getPrice());
+                                                .setName(createStockRequest.getName())
+                                                .setCurrentValue(createStockRequest.getPrice());
         return stockService.createStock(stockCreateDto);
     }
     
     @GetMapping("/stocks/{id}")
-    public Response getStock(@PathVariable int id){
+    public Response getStock(@PathVariable("id")  @Digits(integer=5, fraction=0) @DecimalMin(value = "0", inclusive = false) long id){
         return Response
                 .ok()
                 .setPayload(stockService.getStockById(id));
     }
     
     @PutMapping("/stocks/{id}")
-    public Response updatePrice(@PathVariable String id, @RequestBody @Valid UpdateStockRequest updateStockRequest){
+    public Response updatePrice(@PathVariable("id")  @Digits(integer=5, fraction=0) @DecimalMin(value = "0", inclusive = false)  long id, @RequestBody @Valid UpdateStockRequest updateStockRequest){
         StockUpdateDto stockUpdateDto = new StockUpdateDto()
                                                 .setCurrentValue(updateStockRequest.getPrice())
                                                 .setLastUpdate(new Date());
@@ -77,14 +79,14 @@ public class TradingAppController {
         } else {
             return Response
                     .ok()
-                    .setPayload(stockService.updatePrice(Integer.parseInt(id), stockUpdateDto));
+                    .setPayload(stockService.updatePrice(id, stockUpdateDto));
         }
     }
 
     @DeleteMapping("/stocks/{id}")
-    public Response deleteStockById(@PathVariable String id){
+    public Response deleteStockById(@PathVariable("id")  @Digits(integer=5, fraction=1) @DecimalMin(value = "0.0", inclusive = false)  long id){
         StockDeleteDto stockDeleteDto = new StockDeleteDto()
-                                                .setId(Integer.parseInt(id));
+                                                .setId(id);
         if(stockDeleteDto == null){
             return Response.notFound().setErrors("Stock with id " + id + "does not exist");
         } else {
