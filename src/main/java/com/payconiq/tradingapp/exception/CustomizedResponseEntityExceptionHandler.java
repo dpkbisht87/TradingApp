@@ -26,4 +26,18 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         response.addErrorMsgToResponse(ex.getMessage(), ex);
         return new ResponseEntity(response, HttpStatus.CONFLICT);
     }
+    
+    @ExceptionHandler(StockException.LockedEntityException.class)
+    public final ResponseEntity handleNotFountExceptions2(Exception ex, WebRequest request) {
+        Response response = Response.duplicateEntity();
+        response.addErrorMsgToResponse(ex.getMessage(), ex);
+        return new ResponseEntity(response, HttpStatus.LOCKED);
+    } 
+    
+    @ExceptionHandler(StockException.IdUnavailableException.class)
+    public final ResponseEntity handleNotFountExceptions3(Exception ex, WebRequest request) {
+        Response response = Response.duplicateEntity();
+        response.addErrorMsgToResponse(ex.getMessage(), ex);
+        return new ResponseEntity(response, HttpStatus.SERVICE_UNAVAILABLE);
+    }
 }

@@ -11,6 +11,7 @@ public class StockMapper {
                        .setId(stock.getId())
                        .setName(stock.getName())
                        .setCurrentValue(stock.getPrice())
-                       .setLastUpdate(stock.getLastUpdate());
+                       .setLastUpdate(stock.getLastUpdate())
+                       .setLocked(stock.isLocked());
     }
 }

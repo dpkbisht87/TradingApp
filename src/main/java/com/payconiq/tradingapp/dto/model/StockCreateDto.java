@@ -25,4 +25,6 @@ public class StockCreateDto {
     private String name;
     private BigDecimal currentValue;
     private Date lastUpdate;
+    
+    private boolean locked;
 }

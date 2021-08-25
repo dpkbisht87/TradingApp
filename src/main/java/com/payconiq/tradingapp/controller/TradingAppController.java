@@ -70,29 +70,23 @@ public class TradingAppController {
     }
     
     @PutMapping("/stocks/{id}")
-    public Response updatePrice(@PathVariable("id")  @Digits(integer=5, fraction=0) @DecimalMin(value = "0", inclusive = false)  long id, @RequestBody @Valid UpdateStockRequest updateStockRequest){
+    public Response updatePrice(@PathVariable("id")  @Digits(integer=5, fraction=0) @DecimalMin(value = "0", 
+                                inclusive = false)  
+                                long id, @RequestBody @Valid UpdateStockRequest updateStockRequest){
         StockUpdateDto stockUpdateDto = new StockUpdateDto()
                                                 .setCurrentValue(updateStockRequest.getPrice())
                                                 .setLastUpdate(new Date());
-        if(stockUpdateDto == null){
-            return Response.notFound().setErrors("Stock with id " + id + "does not exist");
-        } else {
-            return Response
-                    .ok()
-                    .setPayload(stockService.updatePrice(id, stockUpdateDto));
-        }
+        return Response
+                .ok()
+                .setPayload(stockService.updatePrice(id, stockUpdateDto));
     }
 
     @DeleteMapping("/stocks/{id}")
     public Response deleteStockById(@PathVariable("id")  @Digits(integer=5, fraction=1) @DecimalMin(value = "0.0", inclusive = false)  long id){
-        StockDeleteDto stockDeleteDto = new StockDeleteDto()
-                                                .setId(id);
-        if(stockDeleteDto == null){
-            return Response.notFound().setErrors("Stock with id " + id + "does not exist");
-        } else {
-            return Response
-                    .ok()
-                    .setPayload(stockService.delete(stockDeleteDto));
-        }
+        StockDeleteDto stockDeleteDto = new StockDeleteDto().setId(id);
+        return Response
+                .ok()
+                .setPayload(stockService.delete(stockDeleteDto));
+        
     }
 }

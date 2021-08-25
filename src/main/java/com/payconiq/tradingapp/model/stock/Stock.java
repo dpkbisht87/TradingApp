@@ -29,4 +29,6 @@ public class Stock {
     
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdate;
+    
+    private boolean locked;
 }

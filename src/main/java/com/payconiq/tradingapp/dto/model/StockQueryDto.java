@@ -23,4 +23,5 @@ public class StockQueryDto {
     private String name;
     private BigDecimal currentValue;
     private Date lastUpdate;
+    private boolean locked;
 }

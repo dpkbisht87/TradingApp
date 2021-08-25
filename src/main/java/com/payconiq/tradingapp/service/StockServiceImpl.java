@@ -17,11 +17,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 import static com.payconiq.tradingapp.exception.EntityType.STOCK;
-import static com.payconiq.tradingapp.exception.ExceptionType.DUPLICATE_ENTITY;
-import static com.payconiq.tradingapp.exception.ExceptionType.ENTITY_NOT_FOUND;
+import static com.payconiq.tradingapp.exception.EntityType.ID;
+import static com.payconiq.tradingapp.exception.ExceptionType.*;
 
 @Component
 public class StockServiceImpl implements StockService {
@@ -58,14 +57,29 @@ public class StockServiceImpl implements StockService {
         stock = stockMockedDataRepository.findByName(stockCreateDto.getName());
         if(stock == null){
             stock = new Stock();
-            Random rand = new Random();
-            stock.setId((long) rand.nextInt(10000000));
+            stock.setId(generateUniqueId());
             stock.setName(stockCreateDto.getName());
             stock.setPrice(stockCreateDto.getCurrentValue());
             stock.setLastUpdate(new Date());
+            stock.setLocked(true);
             return StockMapper.toStockDto(stockMockedDataRepository.save(stock));
         }
         throw exception(STOCK, DUPLICATE_ENTITY, stockCreateDto.getName());
+    }
+    
+    private long generateUniqueId() {
+        int retry = 0;
+        Random rand = new Random();
+        while(retry < 3){
+            long newId = rand.nextInt(10000000);
+            Stock stock = stockMockedDataRepository.findById(newId);
+            if(stock == null) {
+                return newId;
+            } else {
+                retry++;
+            }
+        }
+        throw exception(ID, ID_UNAVAILABLE);
     }
     
     @Override
@@ -77,9 +91,14 @@ public class StockServiceImpl implements StockService {
         }*/
         Stock stock = stockMockedDataRepository.findById(id);
         if (stock != null) {
-            stock.setPrice(stockUpdateDto.getCurrentValue());
-            stock.setLastUpdate(stockUpdateDto.getLastUpdate());
-            return StockMapper.toStockDto(stockMockedDataRepository.update(stock));
+            if(!stock.isLocked()){
+                stock.setPrice(stockUpdateDto.getCurrentValue());
+                stock.setLastUpdate(stockUpdateDto.getLastUpdate());
+                stock.setLocked(true);
+                return StockMapper.toStockDto(stockMockedDataRepository.update(stock));
+            } else {
+                throw exception(STOCK, LOCKED, String.valueOf(id));
+            }
         }
         throw exception(STOCK, ENTITY_NOT_FOUND, String.valueOf(id));
     }

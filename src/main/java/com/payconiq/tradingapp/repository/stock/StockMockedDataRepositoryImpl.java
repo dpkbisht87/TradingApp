@@ -26,6 +26,7 @@ public class StockMockedDataRepositoryImpl implements  StockMockedDataRepository
         s1.setId(1L);
         s1.setName("A");
         s1.setPrice(new BigDecimal("1000"));
+        s1.setLocked(false);
         stocks.add(s1);
     
         /*Stock s2 = new Stock();

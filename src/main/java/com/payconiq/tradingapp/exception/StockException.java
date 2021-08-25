@@ -79,6 +79,10 @@ public class StockException {
             return new EntityNotFoundException(format(messageTemplate, args));
         } else if (ExceptionType.DUPLICATE_ENTITY.equals(exceptionType)) {
             return new DuplicateEntityException(format(messageTemplate, args));
+        } else if (ExceptionType.LOCKED.equals(exceptionType)) {
+            return new DuplicateEntityException(format(messageTemplate, args));
+        } else if (ExceptionType.ID_UNAVAILABLE.equals(exceptionType)) {
+            return new IdUnavailableException(format(messageTemplate, args));
         }
         return new RuntimeException(format(messageTemplate, args));
     }
@@ -102,7 +106,17 @@ public class StockException {
     }
     
     public static class DuplicateEntityException extends RuntimeException {
-        public DuplicateEntityException(String message) {
+        public DuplicateEntityException(String message) { super(message); }
+    }
+    
+    public static class LockedEntityException extends RuntimeException {
+        public LockedEntityException(String message) {
+            super(message);
+        }
+    }
+    
+    public static class IdUnavailableException extends RuntimeException {
+        public IdUnavailableException(String message) {
             super(message);
         }
     }
